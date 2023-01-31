@@ -5,6 +5,9 @@ from django.contrib.auth.models import User
 
 from django.urls import reverse
 
+# импортируем класс TaggableManager для создания тегов у постов
+from taggit.managers import TaggableManager
+
 
 # objects - менеджер моделей по умолчанию
 class PublishedManager(models.Manager):
@@ -55,6 +58,8 @@ class Post(models.Model):
                                                  self.publish.month,
                                                  self.publish.day,
                                                  self.slug])
+
+    tags = TaggableManager() # поле с тегами
 
 
 class Comment(models.Model):

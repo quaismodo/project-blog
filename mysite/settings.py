@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+SITE_ID = 1  # настройка для идентификатора сайта
 
 # Application definition
 
@@ -38,6 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'blog.apps.BlogConfig',
+    'taggit',  # приложения для работы с тэгами
+    'django.contrib.sites',  # позволяет связать объекты на обределенные веб-сайты
+    'django.contrib.sitemaps',  # приложения для работы с картой сайта
+    # Карта сайта — это XML-файл, который сообщает поисковым системам о страницах вашего сайта
+    'django.contrib.postgres',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +82,7 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
     }
 }
 
