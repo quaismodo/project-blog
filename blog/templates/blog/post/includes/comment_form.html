@@ -1,0 +1,11 @@
+<h2>Add a new comment</h2>
+<form action="{% url 'blog:post_comment' post.id %}" method="post">
+    {% for field in form %}
+    <div>
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+    {% endfor %}
+    {% csrf_token %}
+    <input type="submit" value="Add comment">
+</form>
