@@ -1,0 +1,25 @@
+<div class="container-aside aside">
+    <div class="aside__item">
+        <h2 class="aside__title latest">Latest posts</h2>
+        {% comment %}
+        <!-- {% show_latest_posts 3 %} -->
+        {% endcomment %}
+    </div>
+
+    <div class="aside__item">
+        <h2 class="aside__title commented">Most commented posts</h2>
+        {% get_most_commented_posts as most_commented_posts %}
+        <ul class="aside__list">
+            {% for post in most_commented_posts %}
+            <li class="aside__list-item">
+                <a href="{{ post.get_absolute_url }}" class="aside__item-link">
+                    <h3 class="aside__item-title">{{ post.title }}</h3>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="aside__item">
+        <a class="aside__title link" href="{% url 'blog:post_feed' %">Subscribe to RSS feed</a>
+    </div>
+</div>

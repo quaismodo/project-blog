@@ -1,7 +1,9 @@
-<ul>
+<ul class="aside__list">
     {% for post in latest_posts %}
-    <li>
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+    <li class="aside__list-item">
+        <a href="{{ post.get_absolute_url }}" class="aside__item-link">
+            <h3 class="aside__item-title">{{ post.title }}</h3>
+        </a>
     </li>
     {% endfor %}
 </ul>
