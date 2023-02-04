@@ -5,26 +5,35 @@
 
 {% block content %}
 {% if query %}
-<h1>Posts containing "{{ query }}"</h1>
-<h3>
+
+<h1 class="title">Posts containing "{{ query }}"</h1>
+<h2 class="subtitle">
     {% with results.count as total_results %}
     Found {{ total_results }} result{{ total_results|pluralize }}
     {% endwith %}
-</h3>
+</h2>
+
 {% for post in results %}
-    <h4>
-        <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
-    </h4>
-    {{ post.body|markdown|truncatewords_html:12 }}
+<div class="result__block">
+    <div class="result__header">
+        <span class="reuslt__author">{{ post.author }}</span>
+        <span class="reuslt__date">{{ post.publish|date:"j M, H:i" }}</span>
+    </div>
+    <h3 class="result__title"><a href="{{ post.get_absolute_url }}" class="result__link">{{ post.title }}</a></h3>
+    <div class="result__footer">
+        <span class="item-footer__comment">{{ post.comments.count }}</span>
+        <div class="result__tags">
+            {% for tag in post.tags.all %}
+            <a class="footer-tag tag" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                {{ tag.name }}
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 {% empty %}
-    <p>There are no results for your query.</p>
+<p>There are no results for your query.</p>
 {% endfor %}
-<p><a href="{% url 'blog:post_search' %}">Search again</a></p>
-{% else %}
-<h1>Search for posts</h1>
-<form method="get">
-    {{ form.as_div }}
-    <input type="submit" value="Search">
-</form>
 {% endif %}
+
 {% endblock %}

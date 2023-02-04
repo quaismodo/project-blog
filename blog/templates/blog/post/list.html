@@ -8,6 +8,7 @@
 
 {% block content %}
 
+
 <div class="section-main">
 
     <div class="container-aside aside">
@@ -30,44 +31,46 @@
             </ul>
         </div>
         <div class="aside__item">
-            <a class="aside__title link" href="{% url 'blog:post_feed' %">Subscribe to RSS feed</a>
+            <a class="aside__title link" href="{% url 'blog:post_feed' %}">Subscribe to RSS feed</a>
         </div>
     </div>
-
-    {% if tag %}
-    <h2>Posts tagged with "{{ tag.name }}"</h2>
-    {% endif %}
-    <div class="container-card-list">
-        <!-- Перебираем по очереди посты -->
-        <!-- Применяем для ссылки метод получения абсолютного url, объявленный в модели -->
-        {% for post in posts %}
-        <div class="card-list__item">
-            <div class="card-list__item-wrapper">
-                <div class="item-wrapper__title">
-                    <div class="card-list__item-header item-header">
-                        <span class="item-header__author">{{ post.author }}</span>
-                        <span class="item-header__date">{{ post.publish|date:"j M, H:i" }}</span>
-                    </div>
-                    <a href="{{ post.get_absolute_url }}" class="card-list__link">
-                        <h3 class="card-list__title">
-                            {{ post.title }}
-                        </h3>
-                    </a>
-                </div>
-                <div class="card-list__item-footer item-footer">
-                    <div class="item-footer__tags">
-                        {% for tag in post.tags.all %}
-                        <a class="footer-tag tag" href="{% url 'blog:post_list_by_tag' tag.slug %}">
-                            {{ tag.name }}
+    <div class="content">
+        {% if tag %}
+        <h2>Posts tagged with "{{ tag.name }}"</h2>
+        {% endif %}
+        <div class="container-card-list">
+            <!-- Перебираем по очереди посты -->
+            <!-- Применяем для ссылки метод получения абсолютного url, объявленный в модели -->
+            {% for post in posts %}
+            <div class="card-list__item">
+                <div class="card-list__item-wrapper">
+                    <div class="item-wrapper__title">
+                        <div class="card-list__item-header item-header">
+                            <span class="item-header__author">{{ post.author }}</span>
+                            <span class="item-header__date">{{ post.publish|date:"j M, H:i" }}</span>
+                        </div>
+                        <a href="{{ post.get_absolute_url }}" class="card-list__link">
+                            <h3 class="card-list__title">
+                                {{ post.title }}
+                            </h3>
                         </a>
-                        {% endfor %}
                     </div>
-                    <span class="item-footer__comment">{{ post.comments.count }}</span>
+                    <div class="card-list__item-footer item-footer">
+                        <div class="item-footer__tags">
+                            {% for tag in post.tags.all %}
+                            <a class="footer-tag tag" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                                {{ tag.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <span class="item-footer__comment">{{ post.comments.count }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {% endfor %}
+            {% endfor %}
+        </div>
+        {% include 'pagination.html' with page=posts %}
     </div>
 </div>
 
@@ -94,5 +97,5 @@
 
 
 
-{% include 'pagination.html' with page=posts %}
+
 {% endblock %}

@@ -1,3 +1,4 @@
+{% comment %}
 <h2>Add a new comment</h2>
 <form action="{% url 'blog:post_comment' post.id %}" method="post">
     {% for field in form %}
@@ -8,4 +9,22 @@
     {% endfor %}
     {% csrf_token %}
     <input type="submit" value="Add comment">
+</form>
+{% endcomment %}
+
+<form action="{% url 'blog:post_comment' post.id %}" method="post" class="detail__form">
+    <div class="form__box">
+        <label for="id_name" class="form__label">Name</label>
+        <input class="form__input" type="text" name="name" maxlength="80" required="" id="id_name">
+    </div>
+    <div class="form__box">
+        <label for="id_email" class="form__label">Email</label>
+        <input class="form__input" type="email" name="email" maxlength="254" required="" id="id_email">
+    </div>
+    <div class="form__body">
+        <textarea placeholder="Enter comment text" class="form__body-area" name="body" required=""
+            id="id_body"></textarea>
+        {% csrf_token %}
+        <input class="form__body-submit" type="submit" value="Send">
+    </div>
 </form>

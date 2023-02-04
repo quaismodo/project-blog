@@ -3,7 +3,7 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
-{% block content %}
+{% comment %}
 <h1>{{ post.title }}</h1>
 <p class="date">
     Published {{ post.publish }} by {{ post.author }}
@@ -18,7 +18,7 @@
     <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
 </p>
 {% empty %}
-    There are no similar posts yet.
+There are no similar posts yet.
 {% endfor %}
 
 {% with comments.coment as total_comments %}
@@ -36,4 +36,89 @@
 <p>There are no comments.</p>
 {% endfor %}
 {% include 'blog/post/includes/comment_form.html' %}
+
+{% endcomment %}
+
+{% block content %}
+
+<div class="detail__main-block">
+    <div class="detail__content">
+        <span class="detail__date">Published {{ post.publish|date:"j M, H:i" }} by {{ post.author }}</span>
+        <h1 class="detail__title">{{ post.title }}</h1>
+        
+        <div class="detail__description">{{ post.body|markdown }}</div>
+        <div class="detail__footer">
+            <div class="item-footer__tags">
+                {% for tag in post.tags.all %}
+                <a class="footer-tag tag" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                    {{ tag.name }}
+                </a>
+                {% endfor %}
+            </div>
+            <a href="{% url 'blog:post_share' post.id %}" class="detail__share">Share post</a>
+        </div>
+        <div class="detail__comment-block">
+            <h2 class="detail__subtitle">Comments</h2>
+            <span class="item-footer__comment">{{ post.comments.count }}</span>
+        </div>
+
+
+
+        {% include 'blog/post/includes/comment_form.html' %}
+        {% if comments %}
+        {% for comment in comments %}
+        <div class="detail__comment">
+            <div class="comment-info">
+                <p class="comment-info__name">{{ comment.name }}</p>
+                <p class="comment-info__date">{{ comment.created|date:"j M, Y, H:i" }}</p>
+            </div>
+            <div class="comment-text">{{ comment.body|linebreaks }}</div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <div class="comment-not-found">There are no comments.</div>
+        {% endif %}
+    </div>
+
+
+
+
+    <div class="detail__similar">
+        <h2 class="detail__subtitle similar-title">Similar posts</h2>
+        {% if similar_posts %}
+        <div class="card-list__block">
+            {% for post in similar_posts %}
+            <div class="card-list__item">
+                <div class="card-list__item-wrapper">
+                    <div class="item-wrapper__title">
+                        <div class="card-list__item-header item-header">
+                            <span class="item-header__author">{{ post.author }}</span>
+                            <span class="item-header__date">{{ post.publish|date:"j M, H:i" }}</span>
+                        </div>
+                        <a href="{{ post.get_absolute_url }}" class="card-list__link">
+                            <h3 class="card-list__title">{{ post.title }}</h3>
+                        </a>
+                    </div>
+                    <div class="card-list__item-footer item-footer">
+                        <div class="item-footer__tags">
+                            {% for tag in post.tags.all %}
+                            <a class="footer-tag tag" href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                                {{ tag.name }}
+                            </a>
+                            {% endfor %}
+                        </div>
+                        <span class="item-footer__comment">{{ post.comments.count }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="detail__not-found">There are no similar posts yet.</div>
+        {% endif %}
+
+    </div>
+</div>
+
+
 {% endblock %}

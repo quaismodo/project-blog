@@ -30,7 +30,7 @@ def post_list(request, tag_slug=None):
         post_list = post_list.filter(tags__in=[tag])
 
     # используем класс Paginator для создания страниц
-    paginator = Paginator(post_list, 3)
+    paginator = Paginator(post_list, 4)
     page_number = request.GET.get('page', 1)
     try:
         # проверяем есть ли на странице результат отображения
